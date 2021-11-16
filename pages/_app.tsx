@@ -1,5 +1,6 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
+import Layout from '../components/Layout/Layout';
 import { I18nProvider } from '../contexts/i18n'
 
 // styles
@@ -8,7 +9,9 @@ import "../styles/globals.scss";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <I18nProvider>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>  
     </I18nProvider>
   )
 }
