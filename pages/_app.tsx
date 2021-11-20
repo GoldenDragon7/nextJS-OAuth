@@ -1,6 +1,7 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
 import Layout from '../components/Layout/Layout';
+import { AuthProvider } from '../contexts/auth';
 import { I18nProvider } from '../contexts/i18n'
 
 // styles
@@ -9,9 +10,11 @@ import "../styles/globals.scss";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <I18nProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>  
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
     </I18nProvider>
   )
 }

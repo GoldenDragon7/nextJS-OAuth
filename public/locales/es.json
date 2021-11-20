@@ -1,3 +1,5 @@
 {
-  "projectTitle": "Discord OAuth2"
+  "logInWith": "Iniciar sesión con...",
+  "loading": "Cargando...",
+  "logout": "Cerrar sesión"
 }
