@@ -9,6 +9,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: "Invalid state" });
   }
 
+  if (!code) {
+    return res.redirect("/");
+  }
+
   const getToken = await fetch(process.env.DISCORD_TOKEN_URL, {
     method: "POST",
     headers: {
