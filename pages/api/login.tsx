@@ -5,12 +5,12 @@ import cookie from "cookie";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { code, state } = req.query;
 
-  if (state.toString() != req.cookies.state) {
-    return res.status(400).json({ message: "Invalid state" });
-  }
-
   if (!code) {
     return res.redirect("/");
+  }
+
+  if (state.toString() != req.cookies.state) {
+    return res.status(400).json({ message: "Invalid state" });
   }
 
   const getToken = await fetch(process.env.DISCORD_TOKEN_URL, {
@@ -32,12 +32,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (getToken.access_token) {
     res.setHeader(
       "Set-Cookie",
-      cookie.serialize("token", getToken.access_token, {
-        httpOnly: true,
-        path: "/",
-        sameSite: "lax",
-        maxAge: getToken.expires_in,
-      })
+      [
+        cookie.serialize("state", "", {
+          path: "/",
+          maxAge: 0,
+        }),
+        cookie.serialize("token", getToken.access_token, {
+          httpOnly: true,
+          path: "/",
+          sameSite: "lax",
+          maxAge: getToken.expires_in,
+        })
+      ]
     );
     return res.redirect("/");
   }
