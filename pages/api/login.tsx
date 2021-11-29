@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import CryptoJS from "crypto-js";
 
 import cookie from "cookie";
 
@@ -30,6 +31,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }).then((response) => response.json());
 
   if (getToken.access_token) {
+    const encryptedToken = CryptoJS.AES.encrypt(JSON.stringify({ getToken }), process.env.TOKEN_HASH).toString();
     res.setHeader(
       "Set-Cookie",
       [
@@ -37,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           path: "/",
           maxAge: 0,
         }),
-        cookie.serialize("token", getToken.access_token, {
+        cookie.serialize("token", encryptedToken, {
           httpOnly: true,
           path: "/",
           sameSite: "lax",

@@ -16,7 +16,7 @@ export default function Home() {
             {!user ?
               <>
                 <p className={styles.loginWindowTitle}>{t("logInWith")}</p>
-                <button className={styles.discordButton} onClick={signIn}><img src="discord-logo.svg" /><span>Discord</span></button>
+                <button className={styles.discordButton} onClick={signIn}><img src="discord-logo.png" /></button>
               </>
             :
               <>

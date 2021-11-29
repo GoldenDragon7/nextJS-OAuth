@@ -3,17 +3,7 @@ import { useEffect, useState, createContext } from "react";
 import Cookies from "universal-cookie";
 
 const AuthContext = createContext({
-  user: {
-    id: null,
-    username: null,
-    avatar: null,
-    banner: null,
-    banner_color: null,
-    discriminator: null,
-    premium_type: null,
-    locale: null,
-    verified: null,
-  },
+  user: null,
   isLoading: true,
   signIn: () => {},
   signOut: () => {},
@@ -27,12 +17,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await fetch("api/user");
-      const resData = await res.json();
-      if (resData.code != 0) {
-        setUser(resData);
-      }
-      setLoading(false)
+      const res = await fetch("api/user").then((res) => res.json());
+      if (res.code !== 401) setUser(res);
+      setLoading(false);
     };
     getUser();
   }, []);
@@ -60,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = () => {
     setUser(null);
     fetch("api/logout");
-    router.push("/")
+    router.push("/");
   };
 
   return (
